@@ -1,9 +1,12 @@
 import React from "react";
-import Home from "./Home";
-import "./global.css";
+import ReportForm from "./components/ReportForm";
 
 function App() {
-  return <Home />;
+  return (
+    <div>
+      <ReportForm />
+    </div>
+  );
 }
 
 export default App;
