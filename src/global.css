@@ -1,143 +1,88 @@
-/* ============================= */
-/* 🌍 Global Styles */
-/* ============================= */
+/* Global Styles */
 :root {
   --base-font-size: 1rem;
   --primary-color: #333;
   --secondary-color: #555;
   --accent-color: #6a35aa;
   --background-color: #fbf7ff;
-  --max-width: 1200px;
-  --spacing-xs: 0.5rem;
-  --spacing-sm: 1rem;
-  --spacing-md: 1.5rem;
-  --spacing-lg: 2rem;
   --border-radius: 10px;
   --font-family: "Montserrat", sans-serif;
 }
 
-@media (max-width: 600px) {
-  :root {
-    --base-font-size: 0.8rem;
-  }
-}
-
-html, body {
-  height: 100%;
+body {
   font-family: var(--font-family);
   background-color: var(--background-color);
-  margin: 0;
-  padding: 0;
-  max-width: var(--max-width);
-  margin: auto;
-}
-
-/* ============================= */
-/* 📝 Report Form Styles */
-/* ============================= */
-
-.form-container {
-  background: white;
-  padding: var(--spacing-lg);
-  border-radius: var(--border-radius);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  margin: auto;
-}
-
-h1, h2 {
-  text-align: center;
-  color: var(--primary-color);
-}
-
-p {
-  text-align: center;
-  color: var(--secondary-color);
-  font-size: 1rem;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-}
-
-/* Input fields */
-input, textarea, select {
-  width: 100%;
-  padding: var(--spacing-xs);
-  font-size: var(--base-font-size);
-  border: none;
-  border-bottom: 2px solid var(--secondary-color);
-  outline: none;
-  background: transparent;
-  transition: border-bottom 0.3s;
-}
-
-input:focus, textarea:focus, select:focus {
-  border-bottom: 2px solid var(--accent-color);
-}
-
-/* Radio buttons and checkboxes */
-input[type="radio"], input[type="checkbox"] {
-  margin-right: 0.5rem;
-}
-
-/* Date field layout */
-.date-fields {
-  display: flex;
-  gap: var(--spacing-xs);
-  justify-content: space-between;
-}
-
-.date-fields input {
-  width: 30%;
-}
-
-/* Dropdown & text inputs side by side */
-.location-fields {
-  display: flex;
-  gap: var(--spacing-xs);
-}
-
-.location-fields select, .location-fields input {
-  flex: 1;
-}
-
-/* Upload button */
-.upload-button {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: var(--spacing-sm);
-  border: 2px solid var(--accent-color);
-  color: var(--accent-color);
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  height: 100vh;
 }
 
-.upload-button:hover {
-  background: var(--accent-color);
-  color: white;
+/* Margin around the form */
+.form-container {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 800px;
+  margin: 20px auto;
 }
 
-/* Submit button */
-button {
-  background-color: var(--accent-color);
-  color: white;
+/* Headings and paragraphs aligned to left */
+h1, h2, p {
+  text-align: left;
+}
+
+/* Inputs */
+input, select, textarea {
+  width: 100%;
+  padding: 8px;
   border: none;
-  border-radius: var(--border-radius);
-  padding: var(--spacing-sm);
-  font-size: var(--base-font-size);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: center;
+  border-bottom: 2px solid #555;
+  font-family: "Montserrat", sans-serif;
 }
 
-button:active {
-  background-color: transparent;
-  border: 2px solid var(--accent-color);
-  color: var(--accent-color);
+input:focus, select:focus, textarea:focus {
+  border-bottom: 2px solid #6a35aa;
+}
+
+/* Inline options (Yes/No in a row) */
+.inline-options {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Required fields */
+.required {
+  color: red;
+  margin-right: 5px;
+}
+
+/* Date fields in a row */
+.date-fields {
+  display: flex;
+  gap: 10px;
+}
+
+/* Contact fields in a row */
+.contact-fields {
+  display: flex;
+  gap: 10px;
+}
+
+/* Radio button selected color */
+input[type="radio"]:checked {
+  accent-color: #6a35aa;
+}
+
+/* Submit Button */
+button {
+  background-color: #6a35aa;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
 }
 
