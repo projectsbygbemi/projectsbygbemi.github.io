@@ -90,6 +90,7 @@ p {
 label {
   font-weight: bold;
   display: block;
+margin-top: var(--spacing-sm);
   margin-bottom: var(--spacing-xs);
   color: var(--primary-color);
 }
@@ -125,13 +126,14 @@ select {
   appearance: none;
   background-color: white;
   cursor: pointer;
-}
+
 
 /* Radio Buttons */
 .inline-options {
   display: flex;
   gap: var(--spacing-sm);
   align-items: center;
+  justify-content: flex-start;
 }
 
 .inline-options label {
