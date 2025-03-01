@@ -2,20 +2,59 @@ import React, { useState } from "react";
 import "../global.css";
 
 function ReportForm() {
-  const [dateKnown, setDateKnown] = useState(null);
-  const [victimKnown, setVictimKnown] = useState(null);
-  const [perpetratorKnown, setPerpetratorKnown] = useState(null);
-  const [followUp, setFollowUp] = useState(null);
-  const [selectedMonth, setSelectedMonth] = useState("");
-  const [selectedYear, setSelectedYear] = useState("");
-  const [daysInMonth, setDaysInMonth] = useState([]);
-  const currentYear = new Date().getFullYear();
+  const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState({
+    dateKnown: "",
+    victimKnown: "",
+    perpetratorKnown: "",
+    followUp: "",
+    month: "",
+    year: "",
+    day: "",
+    victimName: "",
+    perpetratorName: "",
+    description: "",
+    phone: "",
+    email: "",
+    file: null,
+  });
 
-  // Function to get days in a selected month/year
-  const updateDays = (month, year) => {
-    if (!month || !year) return;
-    const days = new Date(year, month, 0).getDate();
-    setDaysInMonth([...Array(days).keys()].map((d) => d + 1));
+  const validateForm = () => {
+    let newErrors = {};
+
+    if (!formData.month || !formData.year || !formData.day) {
+      newErrors.date = "Please select a valid date.";
+    }
+
+    if (formData.victimKnown === "yes" && !/^[a-zA-Z ]{4,}$/.test(formData.victimName)) {
+      newErrors.victimName = "Name should contain only letters and be at least 4 characters.";
+    }
+
+    if (formData.perpetratorKnown === "yes" && !/^[a-zA-Z ]{4,}$/.test(formData.perpetratorName)) {
+      newErrors.perpetratorName = "Name should contain only letters and be at least 4 characters.";
+    }
+
+    if (formData.phone && !/^\d{11}$/.test(formData.phone)) {
+      newErrors.phone = "Phone number must be exactly 11 digits.";
+    }
+
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address.";
+    }
+
+    if (formData.description.length > 2000) {
+      newErrors.description = "Maximum 2000 characters allowed.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      console.log("Form submitted successfully:", formData);
+    }
   };
 
   return (
@@ -23,29 +62,21 @@ function ReportForm() {
       <h1>Report</h1>
       <p>Tell us everything you know about any femicide case</p>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <h2>Incident Report</h2>
 
         {/* Date of Incident */}
-        <label><span className="required">*</span> Do you know the date of the incident?</label>
+        <label>Do you know the date of the incident? <span className="required">*</span></label>
         <div className="inline-options">
-          <input type="radio" name="dateKnown" value="yes" onClick={() => setDateKnown(true)} /> Yes
-          <input type="radio" name="dateKnown" value="no" onClick={() => setDateKnown(false)} /> No
+          <label><input type="radio" name="dateKnown" value="yes" onChange={(e) => setFormData({...formData, dateKnown: e.target.value })} /> Yes</label>
+          <label><input type="radio" name="dateKnown" value="no" onChange={(e) => setFormData({...formData, dateKnown: e.target.value })} /> No</label>
         </div>
 
-        {dateKnown && (
+        {formData.dateKnown === "yes" && (
           <div className="date-fields">
             <div>
-              <label>Day</label>
+              <label>Month <span className="required">*</span></label>
               <select required>
-                {daysInMonth.map((day) => (
-                  <option key={day} value={day}>{day}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label>Month</label>
-              <select required onChange={(e) => {setSelectedMonth(e.target.value); updateDays(e.target.value, selectedYear);}}>
                 <option value="">Select</option>
                 {["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].map((month, index) => (
                   <option key={index} value={index + 1}>{month}</option>
@@ -53,70 +84,38 @@ function ReportForm() {
               </select>
             </div>
             <div>
-              <label>Year</label>
-              <select required onChange={(e) => {setSelectedYear(e.target.value); updateDays(selectedMonth, e.target.value);}}>
+              <label>Year <span className="required">*</span></label>
+              <select required>
                 <option value="">Select</option>
-                {[...Array(currentYear - 1989).keys()].map((i) => (
-                  <option key={i} value={currentYear - i}>{currentYear - i}</option>
+                {[...Array(new Date().getFullYear() - 1989).keys()].map((i) => (
+                  <option key={i} value={new Date().getFullYear() - i}>{new Date().getFullYear() - i}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label>Day <span className="required">*</span></label>
+              <select required>
+                <option value="">Select</option>
+                {[...Array(31).keys()].map((d) => (
+                  <option key={d} value={d + 1}>{d + 1}</option>
                 ))}
               </select>
             </div>
           </div>
         )}
+        {errors.date && <p className="error">{errors.date}</p>}
 
-        {/* Nature of Incident */}
-        <label><span className="required">*</span> Nature of Incident</label>
-        <select required>
-          <option value="">Select</option>
-          <option value="femicide">Femicide <em>(victim was killed)</em></option>
-          <option value="attempted_femicide">Attempted Femicide <em>(victim survived)</em></option>
-          <option value="sgbv">Other Sexual & Gender-Based Violence (SGBV)</option>
-        </select>
-
-        {/* Victim Name */}
-        <label><span className="required">*</span> Do you know the victim's name?</label>
-        <div className="inline-options">
-          <input type="radio" name="victimKnown" value="yes" onClick={() => setVictimKnown(true)} /> Yes
-          <input type="radio" name="victimKnown" value="no" onClick={() => setVictimKnown(false)} /> No
-        </div>
-
-        {victimKnown && <input type="text" placeholder="Victim's Name" required />}
-
-        {/* Perpetrator Name */}
-        <label><span className="required">*</span> Do you know the perpetrator's name?</label>
-        <div className="inline-options">
-          <input type="radio" name="perpetratorKnown" value="yes" onClick={() => setPerpetratorKnown(true)} /> Yes
-          <input type="radio" name="perpetratorKnown" value="no" onClick={() => setPerpetratorKnown(false)} /> No
-        </div>
-
-        {perpetratorKnown && <input type="text" placeholder="Perpetrator's Name" required />}
+        {/* Upload File */}
+        <label>Upload Evidence</label>
+        <input type="file" className="file-upload" accept=".png, .jpg, .jpeg, .doc, .pdf, .mp3, .mp4" />
+        <p className="file-info">Accepted file types: png, jpg, jpeg, doc, pdf, mp3, mp4.</p>
 
         {/* Description */}
-        <label><span className="required">*</span> Description of the Incident</label>
-        <textarea placeholder="Provide as many details as possible" required></textarea>
+        <label>Description of the Incident <span className="required">*</span></label>
+        <textarea maxLength="2000" placeholder="Provide as many details as possible..." required></textarea>
+        {errors.description && <p className="error">{errors.description}</p>}
 
-        {/* Upload Evidence */}
-        <label>Upload Evidence</label>
-        <input type="file" />
-
-        {/* Follow-up */}
-        <label><span className="required">*</span> Can we follow up with you?</label>
-        <div className="inline-options">
-          <input type="radio" name="followUp" value="yes" onClick={() => setFollowUp(true)} /> Yes
-          <input type="radio" name="followUp" value="no" onClick={() => setFollowUp(false)} /> No
-        </div>
-
-        {followUp && (
-          <>
-            <input type="text" placeholder="Your Name" required />
-            <div className="contact-fields">
-              <input type="tel" placeholder="Phone Number" required />
-              <input type="email" placeholder="Email" required />
-            </div>
-          </>
-        )}
-
-        {/* Submit Button */}
+        {/* Submit */}
         <button type="submit">Submit Report</button>
       </form>
     </div>

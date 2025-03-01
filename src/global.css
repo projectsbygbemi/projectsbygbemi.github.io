@@ -1,88 +1,220 @@
-/* Global Styles */
+/* Root Variables */
 :root {
   --base-font-size: 1rem;
   --primary-color: #333;
   --secondary-color: #555;
   --accent-color: #6a35aa;
   --background-color: #fbf7ff;
+  --max-width: 1200px;
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
   --border-radius: 10px;
-  --font-family: "Montserrat", sans-serif;
+  --font-family: 'Montserrat', sans-serif;
+}
+
+/* Responsive Font Size */
+@media (max-width: 600px) {
+  :root {
+    --base-font-size: 0.9rem;
+  }
+}
+
+/* Global Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   font-family: var(--font-family);
   background-color: var(--background-color);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  margin: 0;
+  padding: 0;
+  max-width: var(--max-width);
+  margin: auto;
 }
 
-/* Margin around the form */
+/* Main Container */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-lg);
+}
+
+/* Headings */
+h1, h2, h3, h4 {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+h3 {
+  font-size: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+h4 {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+}
+
+/* Paragraphs */
+p {
+  font-size: var(--base-font-size);
+  line-height: 1.6;
+  color: var(--secondary-color);
+}
+
+/* Form Container */
 .form-container {
   background: white;
-  padding: 20px;
-  border-radius: 10px;
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 90%;
   max-width: 800px;
-  margin: 20px auto;
+  margin: var(--spacing-lg) auto;
 }
 
-/* Headings and paragraphs aligned to left */
-h1, h2, p {
-  text-align: left;
+/* Labels */
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  color: var(--primary-color);
 }
 
-/* Inputs */
+/* Required Asterisk */
+.required {
+  color: red;
+  margin-left: 5px;
+}
+
+/* Input Fields */
 input, select, textarea {
   width: 100%;
-  padding: 8px;
+  padding: var(--spacing-xs);
   border: none;
-  border-bottom: 2px solid #555;
-  font-family: "Montserrat", sans-serif;
+  border-bottom: 2px solid var(--secondary-color);
+  font-family: var(--font-family);
+  transition: border-bottom 0.3s ease;
 }
 
 input:focus, select:focus, textarea:focus {
-  border-bottom: 2px solid #6a35aa;
+  border-bottom: 2px solid var(--accent-color);
+  outline: none;
 }
 
-/* Inline options (Yes/No in a row) */
+/* Dropdown */
+select {
+  appearance: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+/* Radio Buttons */
 .inline-options {
   display: flex;
-  gap: 20px;
+  gap: var(--spacing-sm);
   align-items: center;
 }
 
-/* Required fields */
-.required {
-  color: red;
-  margin-right: 5px;
+.inline-options label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  cursor: pointer;
 }
 
-/* Date fields in a row */
+/* Style for Selected Radio Button */
+input[type="radio"]:checked {
+  accent-color: var(--accent-color);
+}
+
+/* Date Fields */
 .date-fields {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
 }
 
-/* Contact fields in a row */
-.contact-fields {
-  display: flex;
-  gap: 10px;
+.date-fields div {
+  flex: 1;
+  min-width: 100px;
 }
 
-/* Radio button selected color */
-input[type="radio"]:checked {
-  accent-color: #6a35aa;
+/* File Upload */
+.file-upload {
+  padding: var(--spacing-xs);
+  border: 2px solid var(--accent-color);
+  border-radius: var(--border-radius);
+  width: 100%;
+  cursor: pointer;
+}
+
+.file-info {
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+  margin-top: var(--spacing-xs);
+}
+
+/* Textarea */
+textarea {
+  border: 2px solid var(--secondary-color);
+  min-height: 120px;
+  resize: none;
+}
+
+/* Error Messages */
+.error {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: var(--spacing-xs);
 }
 
 /* Submit Button */
 button {
-  background-color: #6a35aa;
+  background-color: var(--accent-color);
   color: white;
-  padding: 10px;
+  padding: var(--spacing-sm);
   border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--base-font-size);
+  font-family: var(--font-family);
   cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: darkslateblue;
+}
+
+button:active {
+  background-color: transparent;
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+  .date-fields {
+    flex-direction: column;
+  }
+
+  .inline-options {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 }
 
