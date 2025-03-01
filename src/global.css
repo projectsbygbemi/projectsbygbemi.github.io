@@ -49,6 +49,7 @@ main {
 h1, h2, h3, h4 {
   font-weight: 600;
   color: var(--primary-color);
+  text-align: left;
 }
 
 h1 {
@@ -77,7 +78,7 @@ p {
 /* Form Container */
 .form-container {
   background: white;
-  padding: var(--spacing-lg);
+  padding: calc(var(--spacing-lg) * 2);
   border-radius: var(--border-radius);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 90%;
@@ -99,10 +100,15 @@ label {
   margin-left: 5px;
 }
 
+/* Spacing Between Form Fields */
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
 /* Input Fields */
 input, select, textarea {
   width: 100%;
-  padding: var(--spacing-xs);
+  padding: var(--spacing-sm);
   border: none;
   border-bottom: 2px solid var(--secondary-color);
   font-family: var(--font-family);
@@ -135,6 +141,11 @@ select {
   cursor: pointer;
 }
 
+.inline-options p {
+  margin: 0;
+  display: inline;
+}
+
 /* Style for Selected Radio Button */
 input[type="radio"]:checked {
   accent-color: var(--accent-color);
@@ -156,10 +167,10 @@ input[type="radio"]:checked {
 /* File Upload */
 .file-upload {
   padding: var(--spacing-xs);
-  border: 2px solid var(--accent-color);
   border-radius: var(--border-radius);
   width: 100%;
   cursor: pointer;
+  border: none;
 }
 
 .file-info {
@@ -170,7 +181,8 @@ input[type="radio"]:checked {
 
 /* Textarea */
 textarea {
-  border: 2px solid var(--secondary-color);
+  border: 2px solid var(--accent-color);
+  border-radius: var(--border-radius);
   min-height: 120px;
   resize: none;
 }
