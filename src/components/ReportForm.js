@@ -1,58 +1,79 @@
 import React, { useState } from "react";
-import "../global.css"; 
+import "../global.css"; // Ensure correct import path
 
 const ReportForm = () => {
-  const [incidentDateKnown, setIncidentDateKnown] = useState(null);
-  const [victimKnown, setVictimKnown] = useState(null);
-  const [perpetratorKnown, setPerpetratorKnown] = useState(null);
-  const [followUpConsent, setFollowUpConsent] = useState(null);
-  const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
-  const [day, setDay] = useState("");
+  const [formData, setFormData] = useState({
+    dateKnown: "",
+    date: { month: "", year: "", day: "" },
+    natureOfIncident: "",
+    victimKnown: "",
+    victimName: "",
+    perpetratorKnown: "",
+    perpetratorName: "",
+    locationKnown: "",
+    state: "",
+    additionalLocationInfo: "",
+    file: null,
+    description: "",
+    followUp: "",
+    reporterName: "",
+    phone: "",
+    email: "",
+  });
+
   const [errors, setErrors] = useState({});
 
-  const validateForm = (event) => {
-    event.preventDefault();
-    let formErrors = {};
-
-    const nameRegex = /^[A-Za-z\s]{4,}$/; // Only letters, spaces, min 4 chars
-
-    if (!incidentDateKnown) formErrors.incidentDateKnown = "Required";
-    if (!victimKnown) formErrors.victimKnown = "Required";
-    if (!perpetratorKnown) formErrors.perpetratorKnown = "Required";
-    if (!followUpConsent) formErrors.followUpConsent = "Required";
-
-    if (incidentDateKnown === "yes" && (!month || !year || !day)) {
-      formErrors.date = "Please select a valid date.";
-    }
-
-    if (victimKnown === "yes") {
-      const victimName = event.target.victimName.value.trim();
-      if (!nameRegex.test(victimName)) formErrors.victimName = "Name must be at least 4 letters, no numbers or special characters.";
-    }
-
-    if (perpetratorKnown === "yes") {
-      const perpetratorName = event.target.perpetratorName.value.trim();
-      if (!nameRegex.test(perpetratorName)) formErrors.perpetratorName = "Name must be at least 4 letters, no numbers or special characters.";
-    }
-
-    if (followUpConsent === "yes") {
-      const phone = event.target.phone.value.trim();
-      if (!/^\d{11}$/.test(phone)) formErrors.phone = "Phone number must be exactly 11 digits.";
-
-      const email = event.target.email.value.trim();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) formErrors.email = "Enter a valid email address.";
-    }
-
-    if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
-    } else {
-      alert("Form submitted successfully!");
-    }
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const getDaysInMonth = (month, year) => {
-    return new Date(year, month, 0).getDate();
+  const handleFileChange = (e) => {
+    setFormData({ ...formData, file: e.target.files[0] });
+  };
+
+  const validateForm = () => {
+    let newErrors = {};
+
+    if (!formData.dateKnown) newErrors.dateKnown = "Required";
+    if (formData.dateKnown === "yes") {
+      if (!formData.date.month || !formData.date.year || !formData.date.day) {
+        newErrors.date = "Please select full date";
+      }
+    }
+    if (!formData.natureOfIncident) newErrors.natureOfIncident = "Required";
+    if (!formData.victimKnown) newErrors.victimKnown = "Required";
+    if (formData.victimKnown === "yes" && formData.victimName.length < 4) {
+      newErrors.victimName = "Enter at least 4 letters, no special characters";
+    }
+    if (!formData.perpetratorKnown) newErrors.perpetratorKnown = "Required";
+    if (formData.perpetratorKnown === "yes" && formData.perpetratorName.length < 4) {
+      newErrors.perpetratorName = "Enter at least 4 letters, no special characters";
+    }
+    if (!formData.locationKnown) newErrors.locationKnown = "Required";
+    if (formData.locationKnown === "yes" && !formData.state) {
+      newErrors.state = "Required";
+    }
+    if (!formData.description) newErrors.description = "Required";
+    if (!formData.followUp) newErrors.followUp = "Required";
+    if (formData.followUp === "yes" && !formData.reporterName) {
+      newErrors.reporterName = "Required";
+    }
+    if (formData.followUp === "yes" && formData.phone.length !== 11) {
+      newErrors.phone = "Enter exactly 11 digits";
+    }
+    if (formData.followUp === "yes" && !/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Enter a valid email address";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      console.log("Form submitted:", formData);
+    }
   };
 
   return (
@@ -60,80 +81,84 @@ const ReportForm = () => {
       <h1>Report</h1>
       <p>Tell us everything you know about any femicide case.</p>
 
-      <form onSubmit={validateForm}>
-        {/* Do you know the date of the incident? */}
+      <form onSubmit={handleSubmit}>
+        {/* Date Known */}
         <div className="form-group">
-          <label>Do you know the date of the incident? <span className="required">*</span></label>
+          <p>Do you know the date of the incident? <span className="required">*</span></p>
           <div className="inline-options">
-            <input type="radio" name="incidentDateKnown" value="yes" onChange={() => setIncidentDateKnown("yes")} /> <p>Yes</p>
-            <input type="radio" name="incidentDateKnown" value="no" onChange={() => setIncidentDateKnown("no")} /> <p>No</p>
+            <label><input type="radio" name="dateKnown" value="yes" onChange={handleChange} /> Yes</label>
+            <label><input type="radio" name="dateKnown" value="no" onChange={handleChange} /> No</label>
           </div>
-          {errors.incidentDateKnown && <p className="error">{errors.incidentDateKnown}</p>}
+          {errors.dateKnown && <p className="error-text">{errors.dateKnown}</p>}
         </div>
 
-        {/* Date selection if "Yes" */}
-        {incidentDateKnown === "yes" && (
+        {/* Date Fields */}
+        {formData.dateKnown === "yes" && (
           <div className="date-fields">
-            <div>
-              <label>Month <span className="required">*</span></label>
-              <select onChange={(e) => setMonth(e.target.value)} required>
-                <option value="">Select</option>
-                {["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].map((m, index) => (
-                  <option key={index} value={index + 1}>{m}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label>Year <span className="required">*</span></label>
-              <select onChange={(e) => setYear(e.target.value)} required>
-                <option value="">Select</option>
-                {[...Array(35)].map((_, i) => {
-                  const y = new Date().getFullYear() - i;
-                  return <option key={y} value={y}>{y}</option>;
-                })}
-              </select>
-            </div>
-            <div>
-              <label>Day <span className="required">*</span></label>
-              <select onChange={(e) => setDay(e.target.value)} required>
-                <option value="">Select</option>
-                {[...Array(getDaysInMonth(month, year))].map((_, i) => (
-                  <option key={i + 1} value={i + 1}>{i + 1}</option>
-                ))}
-              </select>
-            </div>
+            <label>Month <span className="required">*</span></label>
+            <select name="month" onChange={handleChange}>{/* Options */}</select>
+            <label>Year <span className="required">*</span></label>
+            <select name="year" onChange={handleChange}>{/* Options */}</select>
+            <label>Day <span className="required">*</span></label>
+            <select name="day" onChange={handleChange}>{/* Options */}</select>
+            {errors.date && <p className="error-text">{errors.date}</p>}
           </div>
         )}
-        {errors.date && <p className="error">{errors.date}</p>}
 
-        {/* Name of Victim */}
+        {/* Nature of Incident */}
         <div className="form-group">
-          <label>Do you know the name of the victim? <span className="required">*</span></label>
+          <label>Nature of Incident <span className="required">*</span></label>
+          <select name="natureOfIncident" onChange={handleChange}>
+            <option value="">Select...</option>
+            <option value="Femicide">Femicide (victim is dead)</option>
+            <option value="Attempted Femicide">Attempted femicide (victim survived)</option>
+          </select>
+          {errors.natureOfIncident && <p className="error-text">{errors.natureOfIncident}</p>}
+        </div>
+
+        {/* Victim Known */}
+        <div className="form-group">
+          <p>Do you know the name of the victim? <span className="required">*</span></p>
           <div className="inline-options">
-            <input type="radio" name="victimKnown" value="yes" onChange={() => setVictimKnown("yes")} /> <p>Yes</p>
-            <input type="radio" name="victimKnown" value="no" onChange={() => setVictimKnown("no")} /> <p>No</p>
+            <label><input type="radio" name="victimKnown" value="yes" onChange={handleChange} /> Yes</label>
+            <label><input type="radio" name="victimKnown" value="no" onChange={handleChange} /> No</label>
           </div>
+          {formData.victimKnown === "yes" && (
+            <input type="text" name="victimName" placeholder="Enter victim's name" onChange={handleChange} />
+          )}
+          {errors.victimName && <p className="error-text">{errors.victimName}</p>}
         </div>
 
-        {victimKnown === "yes" && (
-          <input type="text" name="victimName" placeholder="Enter victim's name" />
-        )}
-        {errors.victimName && <p className="error">{errors.victimName}</p>}
-
-        {/* File Upload */}
+        {/* Perpetrator Known */}
         <div className="form-group">
-          <label>Upload Evidence</label>
-          <input type="file" className="file-upload" accept=".png, .jpg, .jpeg, .doc, .pdf, .mp3, .mp4" />
-          <p className="file-info">Allowed file types: PNG, JPG, JPEG, DOC, PDF, MP3, MP4</p>
+          <p>Do you know the name of the perpetrator? <span className="required">*</span></p>
+          <div className="inline-options">
+            <label><input type="radio" name="perpetratorKnown" value="yes" onChange={handleChange} /> Yes</label>
+            <label><input type="radio" name="perpetratorKnown" value="no" onChange={handleChange} /> No</label>
+          </div>
+          {formData.perpetratorKnown === "yes" && (
+            <input type="text" name="perpetratorName" placeholder="Enter perpetrator's name" onChange={handleChange} />
+          )}
+          {errors.perpetratorName && <p className="error-text">{errors.perpetratorName}</p>}
         </div>
 
-        {/* Describe Incident */}
+        {/* Location */}
         <div className="form-group">
-          <label>Describe the Incident <span className="required">*</span></label>
-          <textarea name="description" maxLength="2000" required></textarea>
+          <p>Do you know where it happened? <span className="required">*</span></p>
+          <div className="inline-options">
+            <label><input type="radio" name="locationKnown" value="yes" onChange={handleChange} /> Yes</label>
+            <label><input type="radio" name="locationKnown" value="no" onChange={handleChange} /> No</label>
+          </div>
+          {formData.locationKnown === "yes" && (
+            <>
+              <select name="state" onChange={handleChange}>{/* Nigerian states */}</select>
+              <input type="text" name="additionalLocationInfo" placeholder="Enter City/LGA/Address" onChange={handleChange} />
+            </>
+          )}
+          {errors.state && <p className="error-text">{errors.state}</p>}
         </div>
 
-        {/* Submit Button */}
+        {/* Submit */}
         <button type="submit">Submit Report</button>
       </form>
     </div>

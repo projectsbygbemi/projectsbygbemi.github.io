@@ -53,19 +53,19 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
 }
 
 h2 {
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
 }
 
 h3 {
-  font-size: clamp(1.25rem, 2.5vw, 2rem);
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
 }
 
 h4 {
-  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
 }
 
 /* Paragraphs */
@@ -78,7 +78,7 @@ p {
 /* Form Container */
 .form-container {
   background: white;
-  padding: calc(var(--spacing-lg) * 2);
+  padding: var(--spacing-lg);
   border-radius: var(--border-radius);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 90%;
@@ -102,7 +102,7 @@ label {
 
 /* Spacing Between Form Fields */
 .form-group {
-  margin-bottom: var(--spacing-md);
+  margin-top: var(--spacing-md);
 }
 
 /* Input Fields */
@@ -132,6 +132,7 @@ select {
   display: flex;
   gap: var(--spacing-sm);
   align-items: center;
+  justify-content: flex-start; /* Align to the left */
 }
 
 .inline-options label {
@@ -171,6 +172,14 @@ input[type="radio"]:checked {
   width: 100%;
   cursor: pointer;
   border: none;
+  background-color: var(--accent-color);
+  color: white;
+  text-align: center;
+  padding: var(--spacing-sm);
+}
+
+.file-upload:hover {
+  background-color: darkslateblue;
 }
 
 .file-info {
@@ -184,7 +193,7 @@ textarea {
   border: 2px solid var(--accent-color);
   border-radius: var(--border-radius);
   min-height: 120px;
-  resize: none;
+  resize: vertical;
 }
 
 /* Error Messages */
