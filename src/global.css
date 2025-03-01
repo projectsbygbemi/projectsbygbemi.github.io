@@ -53,19 +53,19 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
 }
 
 h2 {
-  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-size: clamp(1.3rem, 3vw, 2rem);
 }
 
 h3 {
-  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  font-size: clamp(1.1rem, 2.5vw, 1.8rem);
 }
 
 h4 {
-  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  font-size: clamp(1rem, 2vw, 1.5rem);
 }
 
 /* Paragraphs */
@@ -100,9 +100,9 @@ label {
   margin-left: 5px;
 }
 
-/* Spacing Between Form Fields */
+/* Form Group Spacing */
 .form-group {
-  margin-top: var(--spacing-md);
+  margin: var(--spacing-md) 0;
 }
 
 /* Input Fields */
@@ -110,17 +110,17 @@ input, select, textarea {
   width: 100%;
   padding: var(--spacing-sm);
   border: none;
-  border-bottom: 2px solid var(--secondary-color);
+  border-bottom: 2px dotted var(--secondary-color);
   font-family: var(--font-family);
   transition: border-bottom 0.3s ease;
 }
 
 input:focus, select:focus, textarea:focus {
-  border-bottom: 2px solid var(--accent-color);
+  border-bottom: 2px dotted var(--accent-color);
   outline: none;
 }
 
-/* Dropdown */
+/* Dropdown Styling */
 select {
   appearance: none;
   background-color: white;
@@ -132,7 +132,6 @@ select {
   display: flex;
   gap: var(--spacing-sm);
   align-items: center;
-  justify-content: flex-start; /* Align to the left */
 }
 
 .inline-options label {
@@ -150,6 +149,7 @@ select {
 /* Style for Selected Radio Button */
 input[type="radio"]:checked {
   accent-color: var(--accent-color);
+  font-weight: bold;
 }
 
 /* Date Fields */
@@ -171,15 +171,10 @@ input[type="radio"]:checked {
   border-radius: var(--border-radius);
   width: 100%;
   cursor: pointer;
-  border: none;
   background-color: var(--accent-color);
   color: white;
   text-align: center;
-  padding: var(--spacing-sm);
-}
-
-.file-upload:hover {
-  background-color: darkslateblue;
+  border: none;
 }
 
 .file-info {
@@ -193,7 +188,7 @@ textarea {
   border: 2px solid var(--accent-color);
   border-radius: var(--border-radius);
   min-height: 120px;
-  resize: vertical;
+  resize: none;
 }
 
 /* Error Messages */
@@ -230,7 +225,7 @@ button:active {
 /* Responsive Styles */
 @media (max-width: 600px) {
   .date-fields {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .inline-options {
