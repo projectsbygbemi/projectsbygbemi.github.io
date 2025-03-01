@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./global.css"; 
+import "../global.css"; 
 
 const ReportForm = () => {
   const [incidentDateKnown, setIncidentDateKnown] = useState(null);
