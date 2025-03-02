@@ -98,10 +98,10 @@ const ReportForm = () => {
   <label>Do you know the date of the incident?<span className="required">*</span></label>
   <div className="inline-options">
     <label>
-      <input type="radio" name="dateKnown" value="yes" onChange={() => setDateKnown(true)} /> Yes
+<input type="radio" name="dateKnown" value="yes" onChange={() => setFormData({ ...formData, dateKnown: true })} /> Yes
     </label>
     <label>
-      <input type="radio" name="dateKnown" value="no" onChange={() => setDateKnown(false)} /> No
+<input type="radio" name="dateKnown" value="no" onChange={() => setFormData({ ...formData, dateKnown: false })} /> No
     </label>
   </div>
   {errors.dateKnown && <p className="error">{errors.dateKnown}</p>}
@@ -111,7 +111,7 @@ const ReportForm = () => {
   <div className="form-group date-fields">
     <div>
       <label>Month<span className="required">*</span></label>
-      <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)}>
+<select name="selectedMonth" value={formData.selectedMonth} onChange={handleChange}>
         <option value="">Select Month</option>
         {["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
           .map((month, index) => <option key={index} value={index + 1}>{month}</option>)}
@@ -121,25 +121,30 @@ const ReportForm = () => {
 
     <div>
       <label>Year<span className="required">*</span></label>
-      <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
-        <option value="">Select Year</option>
-        {Array.from({ length: new Date().getFullYear() - 1989 }, (_, i) => 1990 + i)
-          .map((year) => <option key={year} value={year}>{year}</option>)}
-      </select>
-      {errors.selectedYear && <p className="error">{errors.selectedYear}</p>}
+<select 
+  name="selectedYear"
+  value={formData.selectedYear} 
+  onChange={handleChange}
+>
+  <option value="">Select Year</option>
+  {Array.from({ length: new Date().getFullYear() - 1989 }, (_, i) => 1990 + i)
+    .map((year) => <option key={year} value={year}>{year}</option>)}
+</select>
+{errors.selectedYear && <p className="error">{errors.selectedYear}</p>}
     </div>
 
     <div>
       <label>Day<span className="required">*</span></label>
-      <select 
-        value={selectedDay} 
-        disabled={!selectedMonth || !selectedYear} 
-        onChange={(e) => setSelectedDay(e.target.value)}
-      >
-        <option value="">Select Day</option>
-        {daysInMonth.map((day) => <option key={day} value={day}>{day}</option>)}
-      </select>
-      {errors.selectedDay && <p className="error">{errors.selectedDay}</p>}
+<select 
+  name="selectedDay"
+  value={formData.selectedDay} 
+  disabled={!formData.selectedMonth || !formData.selectedYear} 
+  onChange={handleChange}
+>
+  <option value="">Select Day</option>
+  {daysInMonth.map((day) => <option key={day} value={day}>{day}</option>)}
+</select>
+{errors.selectedDay && <p className="error">{errors.selectedDay}</p>}
     </div>
   </div>
 )}
@@ -158,10 +163,10 @@ const ReportForm = () => {
   <label>Do you know the victim's name?<span className="required">*</span></label>
   <div className="inline-options">
     <label>
-      <input type="radio" name="victimKnown" value="yes" onChange={() => setVictimKnown(true)} /> Yes
+<input type="radio" name="victimKnown" value="yes" onChange={() => setFormData({ ...formData, victimKnown: true })} /> Yes
     </label>
     <label>
-      <input type="radio" name="victimKnown" value="no" onChange={() => setVictimKnown(false)} /> No
+<input type="radio" name="victimKnown" value="no" onChange={() => setFormData({ ...formData, victimKnown: false })} /> No
     </label>
   </div>
   {victimKnown && (
@@ -182,10 +187,10 @@ const ReportForm = () => {
   <label>Do you know the perpetrator's name?<span className="required">*</span></label>
   <div className="inline-options">
     <label>
-      <input type="radio" name="perpetratorKnown" value="yes" onChange={() => setPerpetratorKnown(true)} /> Yes
+<input type="radio" name="perpetratorKnown" value="yes" onChange={() => setFormData({ ...formData, perpetratorKnown: true })} /> Yes
     </label>
     <label>
-      <input type="radio" name="perpetratorKnown" value="no" onChange={() => setPerpetratorKnown(false)} /> No
+<input type="radio" name="perpetratorKnown" value="no" onChange={() => setFormData({ ...formData, perpetratorKnown: false })} /> No
     </label>
   </div>
   {perpetratorKnown && (
@@ -206,21 +211,11 @@ const ReportForm = () => {
   <label>Do you know where it happened?<span className="required">*</span></label>
   <div className="inline-options">
     <label>
-      <input 
-        type="radio" 
-        name="locationKnown" 
-        value="yes" 
-        onChange={() => setLocationKnown(true)} 
-      /> 
+<input type="radio" name="locationKnown" value="yes" onChange={() => setFormData({ ...formData, locationKnown: true })} />
       Yes
     </label>
     <label>
-      <input 
-        type="radio" 
-        name="locationKnown" 
-        value="no" 
-        onChange={() => setLocationKnown(false)} 
-      /> 
+<input type="radio" name="locationKnown" value="no" onChange={() => setFormData({ ...formData, locationKnown: false })} />
       No
     </label>
   </div>
