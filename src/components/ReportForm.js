@@ -45,33 +45,62 @@ const ReportForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleFileUpload = (e) => {
-    const files = e.target.files;
+   const handleFileUpload = (e) => {
+    const files = Array.from(e.target.files);
     const allowedTypes = ["image/png", "image/jpeg", "image/webp", "audio/mpeg", "video/mp4", "application/pdf", "application/msword"];
+    
     let totalSize = 0;
-
-    for (let file of files) {
+    let validFiles = [];
+    
+    files.forEach(file => {
       totalSize += file.size;
-      if (!allowedTypes.includes(file.type)) {
-        setErrors({ ...errors, evidence: "Invalid file type selected." });
-        return;
+      if (allowedTypes.includes(file.type)) {
+        validFiles.push(file);
       }
-    }
+    });
 
     if (totalSize > 100 * 1024 * 1024) {
       setErrors({ ...errors, evidence: "Total file size cannot exceed 100MB." });
-      return;
+    } else {
+      setFormData({ ...formData, evidence: validFiles });
+      setErrors({ ...errors, evidence: "" });
     }
-
-    setFormData({ ...formData, evidence: files });
-    setErrors({ ...errors, evidence: "" });
   };
+
+  const removeFile = (index) => {
+    const updatedFiles = [...formData.evidence];
+    updatedFiles.splice(index, 1);
+    setFormData({ ...formData, evidence: updatedFiles });
+  };
+
 
   const validateForm = () => {
     let newErrors = {};
     if (!formData.incidentType) newErrors.incidentType = "Required";
+    
+        if (formData.dateKnown === null) newErrors.dateKnown = "Required";
+    if (formData.dateKnown && (!formData.selectedMonth || !formData.selectedYear || !formData.selectedDay)) {
+      newErrors.selectedMonth = "Required";
+      newErrors.selectedYear = "Required";
+      newErrors.selectedDay = "Required";
+    }
+    
+    if (formData.dateKnown === null) newErrors.dateKnown = "Required";
+    if (formData.dateKnown && (!formData.selectedMonth || !formData.selectedYear || !formData.selectedDay)) {
+      newErrors.selectedMonth = "Required";
+      newErrors.selectedYear = "Required";
+      newErrors.selectedDay = "Required";
+    }
+
+    if (formData.victimKnown === null) newErrors.victimKnown = "Required";
     if (formData.victimKnown && !formData.victimName.match(/^[a-zA-Z\s]+$/)) newErrors.victimName = "Only letters allowed";
+
+    if (formData.perpetratorKnown === null) newErrors.perpetratorKnown = "Required";
     if (formData.perpetratorKnown && !formData.perpetratorName.match(/^[a-zA-Z\s]+$/)) newErrors.perpetratorName = "Only letters allowed";
+
+    if (formData.locationKnown === null) newErrors.locationKnown = "Required";
+    if (formData.locationKnown && !formData.state) newErrors.state = "Required";
+
     if (formData.followUp && !formData.userName.match(/^[a-zA-Z\s]+$/)) newErrors.userName = "Only letters allowed";
     if (formData.followUp && !formData.phone.match(/^\d{11}$/)) newErrors.phone = "Must be 11 digits";
     if (formData.followUp && !formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) newErrors.email = "Invalid email format";
@@ -253,24 +282,56 @@ const ReportForm = () => {
           {errors.describeIncident && <p className="error">{errors.describeIncident}</p>}
         </div>
 
-        <div className="form-group">
-          <label>Do you have evidence?<span className="required">*</span></label>
-          <div className="inline-options">
-            <label><input type="radio" name="evidence" value="yes" onChange={() => setFormData({ ...formData, evidence: true })} /> Yes</label>
-            <label><input type="radio" name="evidence" value="no" onChange={() => setFormData({ ...formData, evidence: null })} /> No</label>
-          </div>
-          {formData.evidence && (
-            <>
-              <label className="file-upload">
-                <img src={uploadIcon} alt="Upload" className="upload-icon" />
-                <span>Upload Evidence</span>
-                <input type="file" accept=".png, .jpg, .jpeg, .webp, .mp3, .mp4, .doc, .pdf" multiple onChange={handleFileUpload} />
-              </label>
-              <p className="file-info">Allowed file types: PNG, JPG, JPEG, WEBP, MP3, MP4, DOC, PDF. Max: 100MB</p>
-              {errors.evidence && <p className="error">{errors.evidence}</p>}
-            </>
-          )}
-        </div>
+<div className="form-group">
+  <label>Do you have evidence?<span className="required">*</span></label>
+  <div className="inline-options">
+    <label>
+      <input
+        type="radio"
+        name="evidence"
+        value="yes"
+        onChange={() => setFormData({ ...formData, evidence: true })}
+      /> 
+      Yes
+    </label>
+    <label>
+      <input
+        type="radio"
+        name="evidence"
+        value="no"
+        onChange={() => setFormData({ ...formData, evidence: null, uploadedFiles: [] })}
+      /> 
+      No
+    </label>
+  </div>
+
+  {formData.evidence && (
+    <>
+      <label className="file-upload">
+        <img src={uploadIcon} alt="Upload" className="upload-icon" />
+        <span>Upload Evidence</span>
+        <input
+          type="file"
+          accept=".png, .jpg, .jpeg, .webp, .mp3, .mp4, .doc, .pdf"
+          multiple
+          onChange={handleFileUpload}
+        />
+      </label>
+      <p className="file-info">Allowed file types: PNG, JPG, JPEG, WEBP, MP3, MP4, DOC, PDF. Max: 100MB</p>
+
+      <p className="file-info">
+        {formData.uploadedFiles.length === 0 ? "No file selected" : formData.uploadedFiles.map((file, index) => (
+          <span key={index} className="file-item">
+            {file.name} <button type="button" className="remove-file" onClick={() => removeFile(index)}>{"\u2716"}</button>
+          </span>
+        ))}
+      </p>
+
+      {errors.evidence && <p className="error">{errors.evidence}</p>}
+    </>
+  )}
+</div>
+
 
         <div className="form-group">
           <label>Can we follow up with you?<span className="required">*</span></label>

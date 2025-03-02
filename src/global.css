@@ -83,6 +83,7 @@ label {
   font-weight: bold;
   display: block;
   margin-top: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
   color: var(--primary-color);
 }
 
@@ -175,9 +176,7 @@ input[type="radio"]:checked + label {
   align-items: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-xs);
-  background-color: var(--accent-color);
-  color: white;
-  font-weight: bold;
+  color: var(--accent-color);
   border-radius: 5px;
   cursor: pointer;
   width: fit-content;
@@ -198,6 +197,38 @@ input[type="radio"]:checked + label {
   margin-top: var(--spacing-xs);
 }
 
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--background-color);
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  color: var(--primary-color);
+  border: 1px solid var(--secondary-color);
+}
+
+.remove-file {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0 var(--spacing-xs);
+  transition: color 0.3s ease;
+}
+
+.remove-file:hover {
+  color: darkred;
+}
 
 textarea {
   border: 2px solid var(--accent-color);
