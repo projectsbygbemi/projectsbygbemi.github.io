@@ -108,7 +108,7 @@ const ReportForm = () => {
     
     if (formData.evidence === null) newErrors.evidence = "Required";
 
-
+if (formData.followUp === null) newErrors.followUp = "Required";
     if (formData.followUp && !formData.userName) newErrors.userName = "Required";
     if (formData.followUp && !formData.userName.match(/^[a-zA-Z\s]+$/)) newErrors.userName = "Only letters allowed";
     if (formData.followUp && !formData.phone.match(/^\d{11}$/)) newErrors.phone = "Must be 11 digits";
@@ -199,27 +199,20 @@ const ReportForm = () => {
         </div>
 
 <div className="form-group">
-  <label>Do you know the victim's name?<span className="required">*</span></label>
-  <div className="inline-options">
-    <label>
-<input type="radio" name="victimKnown" value="yes" onChange={() => setFormData({ ...formData, victimKnown: true })} /> Yes
-    </label>
-    <label>
-<input type="radio" name="victimKnown" value="no" onChange={() => setFormData({ ...formData, victimKnown: false })} /> No
-    </label>
-  </div>
-  {formData.victimKnown && (
-    <>
-      <input
-        type="text"
-        name="victimName"
-        placeholder="Enter victim's name"
-        value={formData.victimName}
-        onChange={handleChange}
-      />
-      {errors.victimName && <p className="error">{errors.victimName}</p>}
-    </>
-  )}
+       <label>Do you know the name of the victim?</label>
+      <div>
+        <input type="radio" name="victimKnown" value="yes" onChange={handleChange} /> Yes
+        <input type="radio" name="victimKnown" value="no" onChange={handleChange} /> No
+      </div>
+      {errors.victimKnown && <p className="error">{errors.victimKnown}</p>}
+
+      {formData.victimKnown === "yes" && (
+        <>
+          <label>Victim's Name</label>
+          <input type="text" name="victimName" onChange={handleChange} />
+          {errors.victimName && <p className="error">{errors.victimName}</p>}
+        </>
+      )}
 </div>
 
 <div className="form-group">
@@ -292,46 +285,44 @@ const ReportForm = () => {
           {errors.describeIncident && <p className="error">{errors.describeIncident}</p>}
         </div>
 
-        <div className="form-group">
-          <label>Do you have evidence?<span className="required">*</span></label>
-          <div className="inline-options">
-            <label>
-              <input type="radio" name="evidence" value="yes" onChange={() => setFormData({ ...formData, evidence: true, files: [] })} /> 
-              Yes
-            </label>
-            <label>
-              <input type="radio" name="evidence" value="no" onChange={() => setFormData({ ...formData, evidence: null, files: [] })} /> 
-              No
-            </label>
-          </div>
+<div className="form-group">
+  <label>Do you have evidence?<span className="required">*</span></label>
+  <div className="inline-options">
+    <label>
+      <input type="radio" name="evidence" value="yes" onChange={() => setFormData({ ...formData, evidence: true, files: [] })} /> 
+      Yes
+    </label>
+    <label>
+      <input type="radio" name="evidence" value="no" onChange={() => setFormData({ ...formData, evidence: null, files: [] })} /> 
+      No
+    </label>
+  </div>
 
-          {formData.evidence && (
-            <>
-              <label className="file-upload">
-                <img src={uploadIcon} alt="Upload" className="upload-icon" />
-                <span>Upload Evidence</span>
-                <input
-                  type="file"
-                  accept=".png, .jpg, .jpeg, .webp, .mp3, .mp4, .doc, .pdf"
-                  multiple
-                  onChange={handleFileUpload}
-                />
-              </label>
-              <p className="file-info">Allowed file types: PNG, JPG, JPEG, WEBP, MP3, MP4, DOC, PDF. Max: 100MB</p>
+  {formData.evidence && (
+    <div className="upload-container">
+      <label className="file-upload">
+        <img src={uploadIcon} alt="Upload" className="upload-icon" />
+        <span>Upload Evidence</span>
+        <input
+          type="file"
+          accept=".png, .jpg, .jpeg, .webp, .mp3, .mp4, .doc, .pdf"
+          multiple
+          onChange={handleFileUpload}
+        />
+      </label>
+      <p className="file-info">
+        {formData.files.length === 0 ? "No file selected" : formData.files.map((file, index) => (
+          <span key={index} className="file-item">
+            {file.name} <button type="button" className="remove-file" onClick={() => removeFile(index)}>{"\u2716"}</button>
+          </span>
+        ))}
+      </p>
+      <p className="allowed-types">Allowed file types: PNG, JPG, JPEG, WEBP, MP3, MP4, DOC, PDF. Max: 100MB</p>
+    </div>
+  )}
 
-              <p className="file-info">
-                {formData.files.length === 0 ? "No file selected" : formData.files.map((file, index) => (
-                  <span key={index} className="file-item">
-                    {file.name} <button type="button" className="remove-file" onClick={() => removeFile(index)}>{"\u2716"}</button>
-                  </span>
-                ))}
-              </p>
-
-              {errors.evidence && <p className="error">{errors.evidence}</p>}
-            </>
-          )}
-        </div>
-
+  {errors.evidence && <p className="error">{errors.evidence}</p>}
+</div>
 
         <div className="form-group">
           <label>Can we follow up with you?<span className="required">*</span></label>
