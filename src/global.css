@@ -1,4 +1,3 @@
-/* Root Variables */
 :root {
   --base-font-size: 1rem;
   --primary-color: #333;
@@ -14,14 +13,12 @@
   --font-family: 'Montserrat', sans-serif;
 }
 
-/* Responsive Font Size */
 @media (max-width: 600px) {
   :root {
     --base-font-size: 0.9rem;
   }
 }
 
-/* Global Reset */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -37,7 +34,6 @@ body {
   margin: auto;
 }
 
-/* Main Container */
 main {
   display: flex;
   flex-direction: column;
@@ -45,7 +41,6 @@ main {
   padding: var(--spacing-lg);
 }
 
-/* Headings */
 h1, h2, h3, h4 {
   font-weight: 600;
   color: var(--primary-color);
@@ -68,14 +63,12 @@ h4 {
   font-size: clamp(1rem, 2vw, 1.5rem);
 }
 
-/* Paragraphs */
 p {
   font-size: var(--base-font-size);
   line-height: 1.6;
   color: var(--secondary-color);
 }
 
-/* Form Container */
 .form-container {
   background: white;
   padding: var(--spacing-lg);
@@ -86,27 +79,22 @@ p {
   margin: var(--spacing-lg) auto;
 }
 
-/* Labels */
 label {
   font-weight: bold;
   display: block;
-margin-top: var(--spacing-sm);
-  margin-bottom: var(--spacing-xs);
+  margin-top: var(--spacing-sm);
   color: var(--primary-color);
 }
 
-/* Required Asterisk */
 .required {
   color: red;
   margin-left: 5px;
 }
 
-/* Form Group Spacing */
 .form-group {
   margin: var(--spacing-md) 0;
 }
 
-/* Input Fields */
 input, select, textarea {
   width: 100%;
   padding: var(--spacing-sm);
@@ -121,14 +109,23 @@ input:focus, select:focus, textarea:focus {
   outline: none;
 }
 
-/* Dropdown Styling */
 select {
   appearance: none;
   background-color: white;
   cursor: pointer;
 }
 
-/* Radio Buttons */
+select option {
+  background-color: white;
+  color: var(--primary-color);
+}
+
+select option:hover,
+select option:focus {
+  background-color: var(--accent-color);
+  color: white;
+}
+
 .inline-options {
   display: flex;
   gap: var(--spacing-sm);
@@ -148,13 +145,19 @@ select {
   display: inline;
 }
 
-/* Style for Selected Radio Button */
 input[type="radio"]:checked {
   accent-color: var(--accent-color);
   font-weight: bold;
 }
 
-/* Date Fields */
+.inline-options label {
+  font-weight: normal;
+}
+
+input[type="radio"]:checked + label {
+  font-weight: bold;
+}
+
 .date-fields {
   display: flex;
   flex-wrap: wrap;
@@ -167,16 +170,26 @@ input[type="radio"]:checked {
   min-width: 100px;
 }
 
-/* File Upload */
 .file-upload {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
   padding: var(--spacing-xs);
-  border-radius: var(--border-radius);
-  width: 100%;
-  cursor: pointer;
   background-color: var(--accent-color);
   color: white;
-  text-align: center;
-  border: none;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.file-upload input {
+  display: none;
+}
+
+.upload-icon {
+  width: 20px;
+  height: 20px;
 }
 
 .file-info {
@@ -185,7 +198,7 @@ input[type="radio"]:checked {
   margin-top: var(--spacing-xs);
 }
 
-/* Textarea */
+
 textarea {
   border: 2px solid var(--accent-color);
   border-radius: var(--border-radius);
@@ -193,14 +206,12 @@ textarea {
   resize: none;
 }
 
-/* Error Messages */
 .error {
   color: red;
   font-size: 0.9rem;
   margin-top: var(--spacing-xs);
 }
 
-/* Submit Button */
 button {
   background-color: var(--accent-color);
   color: white;
@@ -224,7 +235,6 @@ button:active {
   color: var(--accent-color);
 }
 
-/* Responsive Styles */
 @media (max-width: 600px) {
   .date-fields {
     flex-direction: row;
@@ -235,4 +245,5 @@ button:active {
     flex-wrap: wrap;
   }
 }
+
 
