@@ -146,18 +146,14 @@ select option:focus {
   display: inline;
 }
 
-input[type="radio"]:checked {
+input[type="radio"]:checked + label {
   accent-color: var(--accent-color);
-  font-weight: bold;
 }
 
 .inline-options label {
   font-weight: normal;
 }
 
-input[type="radio"]:checked + label {
-  font-weight: bold;
-}
 
 .date-fields {
   display: flex;
