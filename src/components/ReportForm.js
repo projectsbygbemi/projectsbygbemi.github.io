@@ -107,7 +107,7 @@ const ReportForm = () => {
   {errors.dateKnown && <p className="error">{errors.dateKnown}</p>}
 </div>
 
-{dateKnown && (
+{formData.dateKnown && (
   <div className="form-group date-fields">
     <div>
       <label>Month<span className="required">*</span></label>
@@ -169,7 +169,7 @@ const ReportForm = () => {
 <input type="radio" name="victimKnown" value="no" onChange={() => setFormData({ ...formData, victimKnown: false })} /> No
     </label>
   </div>
-  {victimKnown && (
+  {formData.victimKnown && (
     <>
       <input
         type="text"
@@ -193,7 +193,7 @@ const ReportForm = () => {
 <input type="radio" name="perpetratorKnown" value="no" onChange={() => setFormData({ ...formData, perpetratorKnown: false })} /> No
     </label>
   </div>
-  {perpetratorKnown && (
+  {formData.perpetratorKnown && (
     <>
       <input
         type="text"
@@ -222,7 +222,7 @@ const ReportForm = () => {
   {errors.locationKnown && <p className="error">{errors.locationKnown}</p>}
 </div>
 
-{locationKnown && (
+{formData.locationKnown && (
   <div className="form-group location-fields">
     <div>
       <label>State<span className="required">*</span></label>
