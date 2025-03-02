@@ -200,7 +200,7 @@ if (formData.followUp === null) newErrors.followUp = "Required";
 
 <div className="form-group">
        <label>Do you know the name of the victim?</label>
-      <div>
+      <div className="inline-options">
         <input type="radio" name="victimKnown" value="yes" onChange={handleChange} /> Yes
         <input type="radio" name="victimKnown" value="no" onChange={handleChange} /> No
       </div>
@@ -208,8 +208,7 @@ if (formData.followUp === null) newErrors.followUp = "Required";
 
       {formData.victimKnown === "yes" && (
         <>
-          <label>Victim's Name</label>
-          <input type="text" name="victimName" onChange={handleChange} />
+          <input type="text" name="victimName" placeholder="Enter victim's name" onChange={handleChange} />
           {errors.victimName && <p className="error">{errors.victimName}</p>}
         </>
       )}

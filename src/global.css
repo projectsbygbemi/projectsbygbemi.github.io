@@ -178,7 +178,7 @@ input[type="radio"]:checked + label {
 }
 
 .file-upload {
-  display: inline-block;
+  display: flex;
   gap: var(--spacing-sm);
   padding: var(--spacing-xs);
   color: var(--accent-color);
