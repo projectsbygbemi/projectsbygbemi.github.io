@@ -201,8 +201,8 @@ if (formData.followUp === null) newErrors.followUp = "Required";
 <div className="form-group">
        <label>Do you know the name of the victim?</label>
       <div className="inline-options">
-        <input type="radio" name="victimKnown" value="yes" onChange={handleChange} /> Yes
-        <input type="radio" name="victimKnown" value="no" onChange={handleChange} /> No
+      <label>  <input type="radio" name="victimKnown" value="yes" onChange={handleChange} /> Yes </label>
+      <label>  <input type="radio" name="victimKnown" value="no" onChange={handleChange} /> No </label>
       </div>
       {errors.victimKnown && <p className="error">{errors.victimKnown}</p>}
 
